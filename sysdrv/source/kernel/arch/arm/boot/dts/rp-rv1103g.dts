@@ -1,0 +1,146 @@
+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+/*
+ * Copyright (c) 2022 Rockchip Electronics Co., Ltd.
+ */
+
+/dts-v1/;
+#include <dt-bindings/gpio/nca9555-gpio.h>
+
+#include "rv1103.dtsi"
+#include "rv1103-evb-v10.dtsi"
+#include "rp-rv1103-sdcard-mmc1.dtsi"
+#include "rp-rv1103-wifi.dtsi"
+#include "rp-rv1103-sound.dtsi"
+
+#include "rp-rv1103-camera-gc2093x1.dtsi"
+//#include "rp-rv1103-mipi-camera-gc2093x2.dtsi"
+/ {
+	model = "Rockchip RV1103G EVB V10 Board";
+	compatible = "rockchip,rv1103g-evb-v10", "rockchip,rv1103";
+
+    rp_power{
+        status = "okay";
+        compatible = "rp_power";
+        rp_not_deep_leep = <1>;
+
+        //#define GPIO_FUNCTION_OUTPUT 0
+        //#define GPIO_FUNCTION_INPUT 1
+        //#define GPIO_FUNCTION_IRQ 2
+        //#define GPIO_FUNCTION_FLASH 3
+        //#define GPIO_FUNCTION_OUTPUT_CTRL 4
+
+        vdd_5v{
+            gpio_num = <&gpio4 RK_PC1 GPIO_ACTIVE_HIGH>;
+            gpio_function = <4>;
+        };
+
+		run_led{  					//LED					
+            gpio_num = <&nca9555_gpio IO_00 GPIO_ACTIVE_HIGH>;
+            gpio_function = <3>;
+        };
+	
+		vdd_4g{						//4G
+            gpio_num = <&nca9555_gpio IO_05 GPIO_ACTIVE_HIGH>;
+            gpio_function = <4>;
+        };
+
+	};
+	
+	rp_gpio {
+			stauts = "okay";
+			compatible = "rp_gpio";
+		
+		nca9555_6{
+            gpio_num = <&nca9555_gpio IO_06 GPIO_ACTIVE_HIGH>;
+            gpio_function = <0>;
+        };
+
+        nca9555_7{
+            gpio_num = <&nca9555_gpio IO_07 GPIO_ACTIVE_HIGH>;
+            gpio_function = <0>;
+       	 };
+
+		nca9555_10{
+            gpio_num = <&nca9555_gpio IO_10 GPIO_ACTIVE_HIGH>;
+            gpio_function = <0>;
+        };
+
+		nca9555_11{
+            gpio_num = <&nca9555_gpio IO_11 GPIO_ACTIVE_HIGH>;
+            gpio_function = <0>;
+        };
+
+		nca9555_12{
+            gpio_num = <&nca9555_gpio IO_12 GPIO_ACTIVE_HIGH>;
+            gpio_function = <0>;
+        };
+
+		nca9555_13{
+            gpio_num = <&nca9555_gpio IO_13 GPIO_ACTIVE_HIGH>;
+            gpio_function = <1>;
+        };
+
+		nca9555_14{
+            gpio_num = <&nca9555_gpio IO_14 GPIO_ACTIVE_HIGH>;
+            gpio_function = <1>;
+        };
+
+		nca9555_15{
+            gpio_num = <&nca9555_gpio IO_15 GPIO_ACTIVE_HIGH>;
+            gpio_function = <1>;
+        };
+
+		nca9555_16{
+            gpio_num = <&nca9555_gpio IO_16 GPIO_ACTIVE_HIGH>;
+            gpio_function = <1>;
+        };
+
+		nca9555_17{
+            gpio_num = <&nca9555_gpio IO_17 GPIO_ACTIVE_HIGH>;
+            gpio_function = <1>;
+        };
+    };
+
+};
+
+&i2c3 {
+    status = "okay";
+    pinctrl-names = "default";
+    pinctrl-0 = <&i2c3m1_xfer>;
+
+    hym8563: hym8563@51 {
+        compatible = "haoyu,hym8563";
+        reg = <0x51>;
+        #clock-cells = <0>;
+        clock-frequency = <32768>; //out 32.768k for wifi
+        clock-output-names = "rtc_32k";
+    };
+    nca9555: mfd-gpio@20 {
+        compatible = "nca9555";
+        reg = <0x20>;
+        status = "okay";
+
+        nca9555_gpio: gpio-normal@34 {
+                compatible = "nca9555-gpio";
+                gpio-controller;
+                #gpio-cells = <2>;
+        };
+    };
+
+};
+
+&usbdrd_dwc3 {
+    //otg mode switch to host in /etc/init.d/S99_otg_def_host
+    dr_mode = "otg";
+
+    //Implemented by rpdzkj and implemented in kernel/drivers/usb/dwc3/core.c file.
+    //when switch to host mode, otg_gpio pull up
+    //when switch to device mode, otg_gpio pull down
+    otg_gpio = <&gpio1 RK_PA2 GPIO_ACTIVE_LOW>;
+};
+
+&uart3 { 
+	status = "okay";
+	pinctrl-names = "default";
+    pinctrl-0 = <&uart3m1_xfer>;
+};

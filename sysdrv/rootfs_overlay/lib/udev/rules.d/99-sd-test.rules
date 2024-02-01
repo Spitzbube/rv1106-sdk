@@ -1,0 +1,2 @@
+KERNEL=="mmcblk1p*[0-9]", ACTION=="add", RUN+="/bin/sh /etc/auto_test.sh add "
+KERNEL=="mmcblk1p*[0-9]", ACTION=="remove", RUN+="/bin/sh /etc/auto_test.sh remove "

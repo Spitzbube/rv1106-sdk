@@ -1,0 +1,10 @@
+&i2c1 {
+    status = "okay";
+    hym8563: hym8563@51 {
+        compatible = "haoyu,hym8563";
+        reg = <0x51>;
+        #clock-cells = <0>;
+        clock-frequency = <32768>; //out 32.768k for wifi
+        clock-output-names = "rtc_32k";
+    };
+};

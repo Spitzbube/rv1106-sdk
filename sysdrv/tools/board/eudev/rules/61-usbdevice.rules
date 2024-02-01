@@ -1,0 +1,1 @@
+DEVPATH=="/devices/platform/usbdrd/ffb00000.usb/udc/ffb00000.usb", SUBSYSTEM=="udc",ACTION=="add",RUN+="/usr/bin/usbdevice %E{DEVPATH} DISCONNECTED"

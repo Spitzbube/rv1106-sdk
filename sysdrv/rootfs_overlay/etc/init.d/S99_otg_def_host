@@ -1,0 +1,24 @@
+#!/bin/sh
+
+case "$1" in
+	start)
+		#default host mode
+		echo host > /sys/devices/platform/ff3e0000.usb2-phy/otg_mode
+
+		#default device mode, or do nothing
+		#echo otg > /sys/devices/platform/ff3e0000.usb2-phy/otg_mode
+		;;
+	stop)
+		echo "no stop function!"
+		;;
+	restart|reload)
+		$0 stop
+		$0 start
+		;;
+	*)
+		echo "Usage: $0 {start|stop|restart}"
+		exit 1
+esac
+
+exit 0
+

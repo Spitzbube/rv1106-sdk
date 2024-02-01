@@ -1,0 +1,44 @@
+&emmc {
+    bus-width = <4>;
+    cap-mmc-highspeed;
+    non-removable;
+    mmc-ddr-1_8v;
+    mmc-hs200-1_8v;
+    rockchip,default-sample-phase = <90>;
+    no-sdio;
+    no-sd;
+    pinctrl-names = "default";
+    pinctrl-0 = <&emmc_bus4 &emmc_cmd_p &emmc_clk_rp>;
+    status = "okay";
+};
+
+&pinctrl {
+    emmc_4bit {
+        /omit-if-no-ref/
+        emmc_bus4: emmc-bus4 {
+            rockchip,pins =
+                /* emmc_d0 */
+                <4 RK_PA4 1 &pcfg_pull_up_drv_level_2>,
+                /* emmc_d1 */
+                <4 RK_PA3 1 &pcfg_pull_up_drv_level_2>,
+                /* emmc_d2 */
+                <4 RK_PA2 1 &pcfg_pull_up_drv_level_2>,
+                /* emmc_d3 */
+                <4 RK_PA6 1 &pcfg_pull_up_drv_level_2>;
+        };
+
+        /omit-if-no-ref/
+        emmc_clk_rp: emmc-clk-rp {
+            rockchip,pins =
+                /* emmc_clk */
+                <4 RK_PB1 1 &pcfg_pull_up_drv_level_2>;
+        };
+
+        /omit-if-no-ref/
+        emmc_cmd_p: emmc-cmd-rp {
+            rockchip,pins =
+                /* emmc_cmd */
+                <4 RK_PB0 1 &pcfg_pull_up_drv_level_2>;
+        };
+    };    
+};
