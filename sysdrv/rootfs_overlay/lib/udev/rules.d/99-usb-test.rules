@@ -1,2 +1,0 @@
-ACTION=="add", KERNEL=="sd*", SUBSYSTEMS=="usb", RUN+="/etc/mount_usb.sh add %k"
-ACTION=="remove", KERNEL=="sd*", SUBSYSTEMS=="usb", RUN+="/etc/mount_usb.sh remove %k"
